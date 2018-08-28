@@ -10,7 +10,12 @@ class App extends Component {
 
     this.state = {
       name: "",
-      newitem: ""
+      items: [
+        {
+          id: 1,
+          text: "asdas"
+        }
+      ]
     };
   }
 
@@ -19,9 +24,17 @@ class App extends Component {
   }
 
   handleSubmit(e) {
-    console.log("Name changed: " + this.state.name);
-    this.setState({ newitem: this.state.name });
     e.preventDefault();
+
+    /* ADD NEW ELEMNT IN STATE 'items' */
+    let newItem = {
+      id: 2,
+      text: this.state.name
+    };
+
+    this.setState(prevState => ({
+      items: [...prevState.items, newItem]
+    }));
   }
 
   render() {
@@ -39,9 +52,7 @@ class App extends Component {
           </label>
         </form>
 
-        <ul>
-          <List element={this.state.newitem} />
-        </ul>
+        <List element={this.state.items} />
       </div>
     );
   }
@@ -53,10 +64,13 @@ class List extends Component {
   }
 
   render() {
-    let item = this.props.element,
-      newitem = <li>{item}</li>;
+    let item = this.props.element;
 
-    return newitem;
+    return (
+      <ul>
+        {this.props.element.map(item => <li key={item.id}>{item.text}</li>)}
+      </ul>
+    );
   }
 }
 
